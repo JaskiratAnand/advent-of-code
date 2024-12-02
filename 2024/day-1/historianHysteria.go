@@ -14,6 +14,13 @@ func check(e error) {
 	}
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 func main() {
 	// Part 1
 	data, err := os.ReadFile("input.txt")
@@ -38,18 +45,14 @@ func main() {
 	slices.Sort(bList)
 
 	// calculating distance between each element of aList and bList
-	var distaceBetween []int
+	var distanceBetween []int
 	for i := 0; i < len(aList); i++ {
-		distance := aList[i] - bList[i]
-		if distance < 0 {
-			distance = distance * -1
-		}
-		distaceBetween = append(distaceBetween, distance)
+		distanceBetween = append(distanceBetween, abs(aList[i]-bList[i]))
 	}
 
 	// calculating total distance
 	var totalDistance int = 0
-	for _, distaceBetween := range distaceBetween {
+	for _, distaceBetween := range distanceBetween {
 		totalDistance += distaceBetween
 	}
 
@@ -62,12 +65,14 @@ func main() {
 	for i := 0; i < len(aList); i++ {
 		var numberRepeats int = 0
 
+		// checking for repeated numbers in bList
 		for j := 0; j < len(bList); j++ {
 			if aList[i] == bList[j] {
 				numberRepeats++
 			}
 		}
 
+		// calculating similarity score => aList[i] * number of repeats
 		similarityScore += aList[i] * numberRepeats
 	}
 
